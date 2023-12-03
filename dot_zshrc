@@ -1,0 +1,28 @@
+
+
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=10000
+SAVEHIST=100000
+HISTFILE=~/.zsh_history
+
+
+# Exports
+export BROWSER="wslview %s"
+export TERM=xterm-256color
+export NERD_FONT=FiraCode
+
+
+# adsf
+. "$HOME/.asdf/asdf.sh"
+
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
+
+
+# ALIASES:
+alias la='ls -lAh'
+
+# Prompt
+eval "$(starship init zsh)"
