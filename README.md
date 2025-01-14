@@ -23,6 +23,7 @@ Add to `.zshrc`:
 
 
 ## Things you generally wanna do each time
+* Passwordless sudo
 * SSH Key
 * GPG Key
 * Deploy dotfiles
