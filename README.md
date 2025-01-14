@@ -10,6 +10,7 @@
 | `chezmoi`                         | dotfiles manager              | Seems better than `yadm`                              |
 | `gh`                              | GitHub CLI                    |                                                       |
 | `wslu`                            | WSL Utilities                 | Dependency for `wslview` (URL Forwarding to Windows)  |
+| `startship`                       | Prompt                        |                                                       |
 
 
 
