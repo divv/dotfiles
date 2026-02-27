@@ -1,6 +1,4 @@
-
-
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+# History
 HISTSIZE=10000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
@@ -12,17 +10,29 @@ export TERM=xterm-256color
 export NERD_FONT=FiraCode
 
 
-# adsf
+# Environment
+. "$HOME/.local/bin/env"
+
+
+# Package Managers
+
+# asdf
 . "$HOME/.asdf/asdf.sh"
 
-# append completions to fpath
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+
+# Completions
 fpath=(${ASDF_DIR}/completions $fpath)
-# initialise completions with ZSH's compinit
 autoload -Uz compinit && compinit
 
 
-# ALIASES:
+# Aliases
 alias la='ls -lAh'
+
 
 # Prompt
 eval "$(starship init zsh)"
