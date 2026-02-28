@@ -1,0 +1,5 @@
+# Ignore secrets and sensitive files
+.env/secrets
+
+# Machine-specific configuration (managed locally)
+.zshrc.local

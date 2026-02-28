@@ -91,12 +91,13 @@ plugins=(
 	starship
 	zsh-autosuggestions
 	zsh-interactive-cd
-	zsh-syntax-highlighting
+	# zsh-syntax-highlighting  # temporarily disabled to test emoji issue
 )
 
 source $ZSH/oh-my-zsh.sh
 
-
+# Fix emoji variation selectors displaying as <fe0f>
+ZSH_HIGHLIGHT_MAXLENGTH=0
 
 # User configuration
 
@@ -149,10 +150,16 @@ export ANDROID_HOME=$HOME/dev/sdk
 export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools/26.0.0-preview/
 
 
-# adsf
+# asdf - lazy loaded
 export ASDF_DATA_DIR="$HOME/.asdf"
 export PATH="$ASDF_DATA_DIR/shims:$PATH"
-. "$HOME/.asdf/asdf.sh"
+
+# Lazy load asdf
+asdf() {
+  unset -f asdf
+  . "$HOME/.asdf/asdf.sh"
+  asdf "$@"
+}
 
 # append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
@@ -168,10 +175,16 @@ alias la='ls -lAFh'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-# Python
+# Python - lazy loaded
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+
+# Lazy load pyenv
+pyenv() {
+  unset -f pyenv
+  eval "$(pyenv init -)"
+  pyenv "$@"
+}
 
 # Volta (Node)
 export VOLTA_HOME="$HOME/.volta"
@@ -203,14 +216,8 @@ export PATH=$PATH:/home/divv/.pulumi/bin
 # add Flutter to the PATH
 export PATH="$PATH:$HOME/flutter/bin"
 
-# OpenRouter API Key (Zendient Labs - Claude Code)
-export OPENROUTER_API_KEY="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"
-
-# Claude Code
-export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
-export ANTHROPIC_AUTH_TOKEN=$OPENROUTER_API_KEY
-export ANTHROPIC_API_KEY="" # Important: Must be explicitly empty
-
+# Source secrets (API keys, etc.)
+[ -f ~/.env/secrets ] && source ~/.env/secrets
 
 # Source deno env
 . "/home/divv/.deno/env"
@@ -229,3 +236,6 @@ autoload -Uz compinit && compinit && source <(entire completion zsh)
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Source machine-specific local configuration
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
