@@ -142,12 +142,8 @@ source ~/.config/.zcolors/zcolors.plugin.zsh
 source ~/.zcolors
 
 # Exports
-export BROWSER="wslview %s"
 export TERM=xterm-256color
-export NERD_FONT=FiraCode
 export GPG_TTY=$(tty)		# need this to enable prompts for GPG passphrase
-export ANDROID_HOME=$HOME/dev/sdk
-export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools/26.0.0-preview/
 
 
 # asdf - lazy loaded
@@ -170,6 +166,61 @@ autoload -Uz compinit && compinit
 # Aliases
 alias la='ls -lAFh'
 
+# 3-Way Multi-Account 1Password bridge for GitHub CLI
+# Uses MACHINE_HOSTNAME variable from .zshrc.local (e.g., "zen" or "zenling")
+gh() {
+    local current_context="personal"
+    local hostname="${MACHINE_HOSTNAME:-zen}"  # Default to "zen" if not set
+
+    # 1. Determine the context based on directory
+    if [[ "$PWD" == "$HOME/dev/rl" ]] || [[ "$PWD" == "$HOME/dev/rl"/* ]]; then
+        current_context="work"
+    elif [[ "$PWD" == "$HOME/dev/zen" ]] || [[ "$PWD" == "$HOME/dev/zen"/* ]]; then
+        current_context="zendient"
+    fi
+
+    # 2. Fetch if token is missing OR if we changed contexts
+    if [[ -z "$GH_TOKEN" ]] || [[ "$GH_TOKEN_CONTEXT" != "$current_context" ]]; then
+        echo "🔐 Switching to '$current_context' context. Fetching token via 1Password..."
+
+        local FETCHED_TOKEN=""
+
+        # 3. Route to the correct 1Password item
+        if [[ "$current_context" == "work" ]]; then
+            # --- ROCKET LAB ---
+            FETCHED_TOKEN=$( \
+                cd /tmp && \
+                op.exe item get "GitHub Token: WSL GitHub CLI [$hostname]" --vault "Employee" --account "rocketlab.1password.com" \
+                --fields label=Token --reveal 2>/dev/null | tr -d '\r')
+
+        elif [[ "$current_context" == "zendient" ]]; then
+            # --- ZENDIENT LABS ---
+            FETCHED_TOKEN=$( \
+                cd /tmp && \
+                op.exe item get "GitHub Token: WSL GitHub CLI [$hostname] @zendient" --vault "1Password Service Accounts" --account "my.1password.com" \
+                --fields label=Token --reveal 2>/dev/null | tr -d '\r')
+
+        else
+            # --- PERSONAL (divv) ---
+            FETCHED_TOKEN=$( \
+                cd /tmp && \
+                op.exe item get "GitHub Token: WSL GitHub CLI [$hostname] @divv" --vault "1Password Service Accounts" --account "my.1password.com" \
+                --fields label=Token --reveal 2>/dev/null | tr -d '\r')
+        fi
+
+        # 4. Save and record state
+        if [[ -n "$FETCHED_TOKEN" ]]; then
+            export GH_TOKEN="$FETCHED_TOKEN"
+            export GH_TOKEN_CONTEXT="$current_context"
+        else
+            echo "❌ 1Password token lookup failed for the $current_context account."
+            return 1
+        fi
+    fi
+
+    # 5. Run the actual command
+    command gh "$@"
+}
 
 # Fuzzy Matching
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -186,16 +237,8 @@ pyenv() {
   pyenv "$@"
 }
 
-# Volta (Node)
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
-
 # Homebrew
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# Brower xdg-open fix
-export BROWSER=wslview
-
 
 # pnpm
 export PNPM_HOME="/home/divv/.local/share/pnpm"
@@ -216,16 +259,8 @@ export PATH=$PATH:/home/divv/.pulumi/bin
 # add Flutter to the PATH
 export PATH="$PATH:$HOME/flutter/bin"
 
-# Source secrets (API keys, etc.)
-[ -f ~/.env/secrets ] && source ~/.env/secrets
-
 # Source deno env
 . "/home/divv/.deno/env"
-
-# Configure Android emulator
-export ANDROID_HOME=$HOME/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
 
 # Entire CLI shell completion
 autoload -Uz compinit && compinit && source <(entire completion zsh)

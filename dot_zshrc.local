@@ -1,0 +1,28 @@
+# Machine-specific configuration
+# This file is for local overrides and machine-specific settings
+# It is sourced at the end of .zshrc
+
+# Source secrets (API keys, etc.)
+[ -f ~/.env/secrets ] && source ~/.env/secrets
+
+# Claude Code
+export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+export ANTHROPIC_AUTH_TOKEN=$OPENROUTER_API_KEY
+export ANTHROPIC_API_KEY="" # Important: Must be explicitly empty
+
+# ================================================================================
+# Machine-Specific Settings
+# ================================================================================
+
+# Machine hostname (used in 1Password token lookups)
+export MACHINE_HOSTNAME="zen"
+
+# Configure Android SDK
+export ANDROID_HOME=$HOME/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
+
+# Add any other machine-specific aliases, exports, or configurations below
+# Example:
+# export CUSTOM_PATH=/path/to/something
+# alias custom-alias='some command'
