@@ -167,10 +167,6 @@ alias la='ls -lAFh'
 # Fuzzy Matching
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Prompt
-eval "$(starship init zsh)"
-
-. "$HOME/.local/bin/env"
 
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
@@ -195,6 +191,7 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
