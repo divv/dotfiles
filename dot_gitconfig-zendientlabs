@@ -1,0 +1,11 @@
+[user]
+  signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCX01EXaezWsvh12bkKVC4Ly/ci+zAUbVFdI2RHpqoVuVoSiULB6VubAXn00pfoHC+UcKrDWxusNDwXV3MRoxImrHl1I8mxoW8i5/RkFq90LCEz2BLEDhw599PIa0GH7Eao1hRIOe9tgvSPlZNwTDA30KS0BprxOypXxiyx/DKkXdT50SQ96Hvi7uRqTSy6mQP/J9J8anxqnRVPFxuMj0rs3MiUPIq0o2ydlXagYB04ggFDg5W9e8zCixKP22daAQqUan0Qf34m6eYOZ5kmlXbw6VLh5UPfpgfvc+1W14nhukFTsLsap0FqKFVWRvwSr+8E4yiraO9jlWNfHQcVlk5aT/8JFZVrujvuIiry9UFOSTzLd3iyRA4rxuzbzkycit1xoh2NK9bZN/7vFVXPy7zbIDUl/HWEnld4R1uXgNbzXQzbBfyeVx5Z/liB6OAMLnbzxKtuMihdPt6UIh5LpRsvU+biTC/O+fbjkVNoudwXAVg6jwJ06nVVaevsRRqUIv8=
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/mnt/c/Users/david/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe"
+
+[commit]
+  gpgsign = true

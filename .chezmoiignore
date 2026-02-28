@@ -1,2 +1,3 @@
 # Ignore secrets and sensitive files
 .env/secrets
+.claude/settings.local.json

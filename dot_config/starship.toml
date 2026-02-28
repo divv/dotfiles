@@ -1,0 +1,20 @@
+# Main prompt configuration
+format = """
+$pulumi$gcloud\
+$all\
+$line_break\
+$character
+"""
+
+[pulumi]
+symbol = "📡 "
+format = '$symbol[$stack]($style) '
+
+[gcloud]
+symbol = '☁\(GCP\) '
+format = '[$account(@$domain(/$project))(\($region\))]($style)'
+
+# Configure the directory module to be concise
+[directory]
+truncation_symbol = "…/"
+truncate_to_repo = true

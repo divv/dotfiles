@@ -1,0 +1,22 @@
+[user]
+    # Default (e.g., personal, used if no other condition matches)
+    email = david@zendient.com
+    name = David Tout
+
+# Rocket Lab (Work)
+[includeIf "gitdir:~/dev/rl/"]
+    path = ~/.gitconfig-rocketlab
+
+# Zendient Labs
+[includeIf "gitdir:~/dev/zen/"]
+    path = ~/.gitconfig-zendientlabs
+
+# Other
+[includeIf "gitdir:~/dev/3rd/"]
+    path = ~/.gitconfig-zendientlabs
+
+[core]
+	sshCommand = ssh.exe
+
+[init]
+	defaultBranch = main

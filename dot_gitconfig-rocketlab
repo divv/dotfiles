@@ -1,0 +1,6 @@
+[user]
+    name = David Tout
+    email = david.tout@rocketlab.com
+
+[core]
+    editor = vim
