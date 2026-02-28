@@ -85,6 +85,7 @@ plugins=(
 	git
 	node
 	pip
+	pyautoenv
 	python
 	thefuck
 	starship
@@ -144,8 +145,13 @@ export BROWSER="wslview %s"
 export TERM=xterm-256color
 export NERD_FONT=FiraCode
 export GPG_TTY=$(tty)		# need this to enable prompts for GPG passphrase
+export ANDROID_HOME=$HOME/dev/sdk
+export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/build-tools/26.0.0-preview/
+
 
 # adsf
+export ASDF_DATA_DIR="$HOME/.asdf"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
 . "$HOME/.asdf/asdf.sh"
 
 # append completions to fpath
@@ -166,6 +172,63 @@ eval "$(starship init zsh)"
 
 . "$HOME/.local/bin/env"
 
+# Python
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# Volta (Node)
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+# Homebrew
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Brower xdg-open fix
+export BROWSER=wslview
+
+
+# pnpm
+export PNPM_HOME="/home/divv/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# add Pulumi to the PATH
+export PATH=$PATH:/home/divv/.pulumi/bin
+
+# add Flutter to the PATH
+export PATH="$PATH:$HOME/flutter/bin"
+
+# OpenRouter API Key (Zendient Labs - Claude Code)
+export OPENROUTER_API_KEY="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"
+
+# Claude Code
+export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+export ANTHROPIC_AUTH_TOKEN=$OPENROUTER_API_KEY
+export ANTHROPIC_API_KEY="" # Important: Must be explicitly empty
+
+
+# Source deno env
+. "/home/divv/.deno/env"
+
+# Configure Android emulator
+export ANDROID_HOME=$HOME/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
+
+# Entire CLI shell completion
+autoload -Uz compinit && compinit && source <(entire completion zsh)
+
+# bun completions
+[ -s "/home/divv/.bun/_bun" ] && source "/home/divv/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
